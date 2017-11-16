@@ -28,8 +28,8 @@ def get_options():
                         default=False)
     parser.add_argument('-o', '--output-model-path',
                         default='output/word2vec.gensim.model')
-    parser.add_argument('--size', type=int, default=100)
-    parser.add_argument('--window', type=int, default=8)
+    parser.add_argument('--size', type=int, default=500)
+    parser.add_argument('--window', type=int, default=10)
     parser.add_argument('--min-count', type=int, default=10)
 
     parser.add_argument('--download-wikipedia-dump', action='store_true',
