@@ -42,6 +42,10 @@ def get_options():
                         default=False)
     parser.add_argument('--dictionary-path', default='output/dic')
 
+    parser.add_argument('-u','--update', action='store_true', default=False)
+    parser.add_argument('--document', default='doc.txt')
+    parser.add_argument('--model', default='output/word2vec.gensim.model')
+
     args = parser.parse_args()
     return vars(args)
 
@@ -52,13 +56,25 @@ def main():
     commands = [
         'download_neologd',
         'download_wikipedia_dump',
-        'build_gensim_model'
+        'build_gensim_model',
+        'update'
     ]
     if not any(options[c] for c in commands):
         print('At least one of following options needs to be specified:',
               *['  --' + c.replace('_', '-') for c in commands], sep='\n')
 
     dic_path = options['dictionary_path']
+    output_model_path = options['output_model_path']
+    if options['update']:
+        model_path = options['model']
+        document = options['document']
+        doc=""
+        with open(document) as f:
+            doc = f.read()
+        tokens = tokenizer.tokenize(doc, tokenizer.get_tagger(dic_path))
+        word2vec.update_gensim_w2v_model(model_path, tokens, output_model_path)
+        return
+
     if options['download_neologd']:
         tokenizer.download_neologd(dic_path)
 
@@ -67,7 +83,6 @@ def main():
     if options['download_wikipedia_dump']:
         wikipedia.download_dump(wikipedia_dump_path, wikipedia_dump_url)
 
-    output_model_path = options['output_model_path']
     size = options['size']
     window = options['window']
     min_count = options['min_count']

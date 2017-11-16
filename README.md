@@ -51,6 +51,13 @@ Another example to specify hyper parameters.
 ./build -o output/another.model --build-gensim-model --size=50 --window=10 --min-count=5
 ```
 
+Update model
+
+```
+. .env/bin/activate
+./build --update --document=doc.txt --model=output/word2vec.gensim.model --o=output/word2vecUpdated.gensim.model
+```
+
 How to use the model
 --------------------
 
